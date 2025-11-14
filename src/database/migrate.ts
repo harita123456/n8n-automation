@@ -1,9 +1,9 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
 // Use require for postgres to handle CommonJS/ESM compatibility
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const postgres = require('postgres');
 
 dotenv.config();
@@ -14,8 +14,27 @@ async function migrate() {
     throw new Error('DATABASE_URL is not defined');
   }
 
-  const client = postgres(connectionString, { max: 1 });
-  const db = drizzle(client);
+  // Determine if SSL is needed (cloud databases require SSL, localhost usually doesn't)
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(connectionString);
+  } catch (error) {
+    throw new Error('DATABASE_URL has invalid format');
+  }
+
+  const hostname = parsedUrl.hostname;
+  const isLocalhost =
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname?.startsWith('192.168.') ||
+    hostname?.startsWith('10.') ||
+    hostname?.startsWith('172.');
+
+  const client = postgres(connectionString, {
+    max: 1,
+    ssl: isLocalhost ? false : 'require', // Require SSL for remote databases
+    connect_timeout: 30, // Increase timeout for migrations
+  });
 
   const migrationsDir = path.join(__dirname, 'migrations');
   const files = fs.readdirSync(migrationsDir).sort();
