@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Workflow - Sheet to Trello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <%- include('partials/header', { currentPage: 'workflow', user: user }) %>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Review Workflow</h1>
+                <p class="mt-2 text-sm text-gray-600">Review your workflow configuration before running</p>
+            </div>
+
+            <div class="bg-white shadow-sm border border-gray-100 rounded-2xl p-8 mb-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-cog text-blue-600"></i>
+                    </div>
+                    Configuration
+                </h2>
+                <dl class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Workflow Name</dt>
+                        <dd class="text-sm font-medium text-gray-900"><%= workflow.name || 'Untitled Workflow' %></dd>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Sheet</dt>
+                        <dd class="text-sm font-medium text-gray-900"><%= workflow.sheetName || workflow.sheetId || 'Uploaded File' %></dd>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Trello Board</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-900"><%= typeof trelloBoardName !== 'undefined' ? trelloBoardName : workflow.trelloBoardId %></span>
+                                <span class="text-xs text-gray-500 font-mono bg-gray-200 px-2 py-0.5 rounded">(<%= workflow.trelloBoardId %>)</span>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Trello List</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            <div class="flex items-center gap-2">
+                                <span class="text-gray-900"><%= typeof trelloListName !== 'undefined' ? trelloListName : workflow.trelloListId %></span>
+                                <span class="text-xs text-gray-500 font-mono bg-gray-200 px-2 py-0.5 rounded">(<%= workflow.trelloListId %>)</span>
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Mode</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium <%= workflow.useN8n === 'true' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' %>">
+                                <%= workflow.useN8n === 'true' ? 'n8n Workflow' : 'Direct API' %>
+                            </span>
+                        </dd>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Milestones Found</dt>
+                        <dd class="text-sm font-medium text-gray-900">
+                            <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-sm font-semibold <%= typeof milestoneCount !== 'undefined' && milestoneCount > 0 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                                <i class="fas fa-<%= typeof milestoneCount !== 'undefined' && milestoneCount > 0 ? 'check-circle' : 'exclamation-triangle' %> mr-2"></i>
+                                <%= typeof milestoneCount !== 'undefined' ? milestoneCount : 0 %> milestones
+                            </span>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+
+            <% if (typeof milestones !== 'undefined' && milestones && milestones.length > 0) { %>
+            <div class="bg-white shadow-sm border border-gray-100 rounded-2xl p-8 mb-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                    <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fas fa-list-check text-green-600"></i>
+                    </div>
+                    Milestones Preview
+                </h2>
+                <p class="text-sm text-gray-600 mb-6 ml-[52px]">The following milestones will be created as Trello cards:</p>
+                <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                    <% milestones.forEach(function(milestone, index) { %>
+                    <div class="border border-gray-200 rounded-xl p-4 hover:bg-gray-50 hover:border-gray-300 transition-all duration-150">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="text-sm font-semibold text-gray-900 flex items-center">
+                                    <span class="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-xs font-bold mr-3">
+                                        <%= index + 1 %>
+                                    </span>
+                                    <%= milestone.title || milestone.milestone || 'Untitled' %>
+                                </h3>
+                                <% if (milestone.description || milestone.modules) { %>
+                                <p class="mt-2 ml-9 text-xs text-gray-500 line-clamp-2">
+                                    <%= (milestone.description || milestone.modules || '').substring(0, 100) %><% if ((milestone.description || milestone.modules || '').length > 100) { %>...<% } %>
+                                </p>
+                                <% } %>
+                                <div class="mt-3 ml-9 flex flex-wrap gap-2">
+                                    <% if (milestone.members) { %>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-100 text-blue-800 text-xs font-medium">
+                                        <i class="fas fa-users mr-1.5 text-xs"></i>
+                                        <%= milestone.members %>
+                                    </span>
+                                    <% } %>
+                                    <% if (milestone.labels) { %>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-purple-100 text-purple-800 text-xs font-medium">
+                                        <i class="fas fa-tags mr-1.5 text-xs"></i>
+                                        <%= milestone.labels %>
+                                    </span>
+                                    <% } %>
+                                    <% if (milestone.totalHours) { %>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-green-100 text-green-800 text-xs font-medium">
+                                        <i class="fas fa-clock mr-1.5 text-xs"></i>
+                                        <%= milestone.totalHours %> hours
+                                    </span>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+            <% } else { %>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <h3 class="text-sm font-semibold text-yellow-900">No milestones found</h3>
+                        <div class="mt-2 text-sm text-yellow-700">
+                            <p>Milestones will be loaded when you run the workflow. Make sure your sheet contains data with a "Milestone" or "Title" column.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="flex justify-end space-x-3 pt-4">
+                <a href="/dashboard" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                    Cancel
+                </a>
+                <form id="runWorkflowForm" action="/workflow/run/<%= workflow.id %>" method="POST" class="inline" onsubmit="return handleRunWorkflow(event)">
+                    <button type="submit" id="runWorkflowBtn" class="px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                        <span id="runWorkflowText">
+                            <i class="fas fa-play mr-2"></i>Run Workflow
+                        </span>
+                        <span id="runWorkflowSpinner" class="hidden">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>Running...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <script>
+            function handleRunWorkflow(event) {
+                const form = event.target;
+                const btn = document.getElementById('runWorkflowBtn');
+                const text = document.getElementById('runWorkflowText');
+                const spinner = document.getElementById('runWorkflowSpinner');
+                
+                // Disable button immediately
+                btn.disabled = true;
+                text.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                
+                // Prevent double submission
+                form.onsubmit = function() { return false; };
+                
+                return true;
+            }
+            </script>
+        </div>
+    </main>
+</body>
+</html>

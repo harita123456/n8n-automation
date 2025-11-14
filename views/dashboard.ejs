@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sheet to Trello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <%- include('partials/header', { currentPage: 'dashboard', user: user }) %>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+                <p class="mt-2 text-sm text-gray-600">Manage your automation workflows</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div class="group bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between gap-4 mb-5">
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300 flex-shrink-0">
+                                    <i class="fas fa-file-excel text-lg text-blue-600"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-base font-bold text-gray-900 leading-tight">Sample Sheet</p>
+                                    <p class="text-xs text-gray-600 leading-tight mt-0.5">Template reference</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <a href="https://docs.google.com/spreadsheets/d/1TN6qK1USjEdvzvGKdi8BezJxV3pMyztH0Kahp_ve1VU/edit?gid=1722959697#gid=1722959697" target="_blank" rel="noopener" class="w-9 h-9 inline-flex items-center justify-center text-gray-600 bg-gray-50 border border-gray-200 hover:bg-gray-100 hover:border-gray-300 rounded-lg transition-all duration-200 shadow-sm hover:shadow" title="View sample sheet">
+                                    <i class="fas fa-external-link-alt text-sm"></i>
+                                </a>
+                                <a href="https://docs.google.com/spreadsheets/d/1TN6qK1USjEdvzvGKdi8BezJxV3pMyztH0Kahp_ve1VU/export?format=xlsx" class="w-9 h-9 inline-flex items-center justify-center text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105" title="Download sample">
+                                    <i class="fas fa-download text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/sheet/select" class="group bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl hover:shadow-lg hover:border-green-200 transition-all duration-300 transform hover:scale-[1.02] block w-full">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors duration-300 flex-shrink-0">
+                                    <i class="fas fa-file-excel text-lg text-green-600"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-base font-bold text-gray-900 leading-tight">Select Sheet</p>
+                                    <p class="text-xs text-gray-600 leading-tight mt-0.5">Choose from Google Drive</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center flex-shrink-0 text-gray-400 group-hover:text-green-600 transition-colors duration-200">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <button onclick="document.getElementById('fileInput').click()" class="group bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl hover:shadow-lg hover:border-blue-200 transition-all duration-300 transform hover:scale-[1.02] block w-full text-left">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 flex-1 min-w-0">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300 flex-shrink-0">
+                                    <i class="fas fa-upload text-lg text-blue-600"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-base font-bold text-gray-900 leading-tight">Upload File</p>
+                                    <p class="text-xs text-gray-600 leading-tight mt-0.5">Excel/CSV file</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center flex-shrink-0 text-gray-400 group-hover:text-blue-600 transition-colors duration-200">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" class="hidden" accept=".xlsx,.xls,.csv" onchange="handleFileUpload(event)">
+                </button>
+            </div>
+
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Workflows</h2>
+                <% if (workflows && workflows.length > 0) { %>
+                <div class="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
+                    <ul class="divide-y divide-gray-100">
+                        <% workflows.forEach(function(workflow) { %>
+                        <li class="hover:bg-gray-50 transition-colors duration-150">
+                            <div class="px-6 py-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="min-w-0 flex-1">
+                                        <a href="/workflow/status/<%= workflow.id %>" class="block focus:outline-none group">
+                                            <p class="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-150">
+                                                <%= workflow.name || workflow.sheetName || 'Untitled Workflow' %>
+                                            </p>
+                                        </a>
+                                        <p class="mt-1.5 text-xs text-gray-500 flex items-center">
+                                            <i class="fas fa-clock mr-1.5 text-gray-400"></i>
+                                            Created: <%
+                                                const createdDate = workflow.createdAt instanceof Date 
+                                                    ? workflow.createdAt 
+                                                    : new Date(workflow.createdAt);
+                                                // Convert UTC to IST (Asia/Kolkata) for display
+                                                const istDate = createdDate.toLocaleString('en-IN', { 
+                                                    timeZone: 'Asia/Kolkata', 
+                                                    year: 'numeric', 
+                                                    month: '2-digit', 
+                                                    day: '2-digit', 
+                                                    hour: '2-digit', 
+                                                    minute: '2-digit', 
+                                                    second: '2-digit', 
+                                                    hour12: true 
+                                                });
+                                            %><%= istDate %>
+                                        </p>
+                                    </div>
+                                    <div class="ml-4 flex items-center space-x-2">
+                                        <a href="/workflow/review/<%= workflow.id %>" class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-150">
+                                            Review
+                                        </a>
+                                        <form action="/workflow/delete/<%= workflow.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this workflow?');" class="inline">
+                                            <button type="submit" class="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-150">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <% } else { %>
+                <div class="bg-white shadow-sm border border-gray-100 rounded-2xl p-12 text-center">
+                    <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-folder-open text-2xl text-gray-400"></i>
+                    </div>
+                    <p class="text-gray-600 font-medium">No workflows yet</p>
+                    <p class="text-sm text-gray-500 mt-1">Create your first workflow to get started!</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+    async function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/sheet/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('File uploaded successfully! ' + data.count + ' milestones found.');
+                // Redirect to workflow creation
+                window.location.href = '/trello/select?milestones=' + encodeURIComponent(JSON.stringify(data.milestones));
+            } else {
+                alert('Upload failed: ' + data.error);
+            }
+        } catch (error) {
+            alert('Upload failed: ' + error.message);
+        }
+    }
+    </script>
+</body>
+</html>

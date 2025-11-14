@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Trello Board - Sheet to Trello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <%- include('partials/header', { currentPage: 'workflow', user: user }) %>
+
+    <main class="max-w-4xl mx-auto py-8 sm:px-6 lg:px-8">
+        <div class="px-4 sm:px-0">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Configure Workflow</h1>
+                <p class="text-gray-600">Set up your Trello board and list for card creation</p>
+            </div>
+
+            <% if (typeof needsTrelloSetup !== 'undefined' && needsTrelloSetup) { %>
+            <div class="rounded-xl bg-yellow-50 border border-yellow-200 p-6 mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <h3 class="text-sm font-semibold text-yellow-900 mb-2">Trello Account Not Configured</h3>
+                        <p class="text-sm text-yellow-700 mb-4">You need to configure your Trello API credentials before you can select boards.</p>
+                        <a href="/settings" class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl text-sm font-medium text-white bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 transition-all duration-200">
+                            <i class="fas fa-cog mr-2"></i>Configure Trello Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <% if (error && !needsTrelloSetup) { %>
+            <div class="rounded-xl bg-red-50 border border-red-200 p-4 mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">
+                            <%= error %>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <form id="workflowForm" action="/workflow/create" method="POST" class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
+                    <div>
+                        <label for="workflowName" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Workflow Name
+                            <span class="text-gray-400 font-normal text-xs ml-1">(optional)</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="workflowName"
+                            name="workflowName" 
+                            placeholder="e.g., Q1 Roadmap Import" 
+                            class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+                        >
+                        <p class="mt-2 text-xs text-gray-500">This name will appear in your Recent Workflows list and status pages.</p>
+                    </div>
+                </div>
+
+                <input type="hidden" name="sheetId" value="<%= typeof sheetId !== 'undefined' ? sheetId : '' %>">
+                <input type="hidden" name="sheetName" value="<%= typeof sheetName !== 'undefined' ? sheetName : '' %>">
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
+                    <div>
+                        <label for="boardSelect" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Trello Board
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="boardSelect" 
+                                name="trelloBoardId" 
+                                required 
+                                class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none hover:border-gray-300 cursor-pointer"
+                            >
+                                <option value="">-- Select a board --</option>
+                                <% if (boards && boards.length > 0) { %>
+                                <% boards.forEach(function(board) { %>
+                                <option value="<%= board.id %>"><%= board.name %></option>
+                                <% }); %>
+                                <% } %>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="listSelect" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Trello List
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="listSelect" 
+                                name="trelloListId" 
+                                required 
+                                disabled 
+                                class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base bg-gray-50 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none cursor-not-allowed"
+                            >
+                                <option value="">-- Select a board first --</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                    <div class="flex items-start space-x-3">
+                        <input 
+                            type="checkbox" 
+                            id="useN8n"
+                            name="useN8n" 
+                            value="true" 
+                            class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2 transition-all duration-200 cursor-pointer"
+                        >
+                        <div class="flex-1">
+                            <label for="useN8n" class="block text-sm font-semibold text-gray-900 cursor-pointer">
+                                Use n8n Workflow
+                            </label>
+                            <p class="mt-1 text-xs text-gray-500">Enable this to route card creation through an n8n workflow instead of direct Trello API.</p>
+                        </div>
+                    </div>
+                    <div id="n8nConfig" class="mt-6 hidden">
+                        <label for="n8nWebhookUrl" class="block text-sm font-semibold text-gray-900 mb-2">
+                            n8n Webhook URL
+                        </label>
+                        <input 
+                            type="url" 
+                            id="n8nWebhookUrl"
+                            name="n8nWebhookUrl" 
+                            placeholder="https://your-n8n-instance.com/webhook/..." 
+                            class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+                        >
+                        <p class="mt-2 text-xs text-gray-500">Enter the webhook URL for your n8n workflow endpoint.</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4">
+                    <a href="/dashboard" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                        Create Workflow
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <script>
+        const boardSelect = document.getElementById('boardSelect');
+        const listSelect = document.getElementById('listSelect');
+        const n8nCheckbox = document.getElementById('useN8n');
+        const n8nConfig = document.getElementById('n8nConfig');
+        const n8nWebhookInput = document.getElementById('n8nWebhookUrl');
+
+        boardSelect.addEventListener('change', async function() {
+            const boardId = this.value;
+            if (!boardId) {
+                listSelect.disabled = true;
+                listSelect.className = listSelect.className.replace('bg-white', 'bg-gray-50').replace('text-gray-900', 'text-gray-500');
+                listSelect.innerHTML = '<option value="">-- Select a board first --</option>';
+                return;
+            }
+
+            listSelect.disabled = true;
+            listSelect.className = listSelect.className.replace('bg-white', 'bg-gray-50').replace('text-gray-900', 'text-gray-500');
+            listSelect.innerHTML = '<option value="">Loading lists...</option>';
+
+            try {
+                const response = await fetch('/trello/boards/' + boardId + '/lists');
+                const lists = await response.json();
+
+                listSelect.innerHTML = '<option value="">-- Select a list --</option>';
+                lists.forEach(function(list) {
+                    const option = document.createElement('option');
+                    option.value = list.id;
+                    option.textContent = list.name;
+                    listSelect.appendChild(option);
+                });
+                listSelect.disabled = false;
+                listSelect.className = listSelect.className.replace('bg-gray-50', 'bg-white').replace('text-gray-500', 'text-gray-900');
+            } catch (error) {
+                listSelect.innerHTML = '<option value="">Error loading lists</option>';
+                console.error('Error loading lists:', error);
+            }
+        });
+
+        n8nCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                n8nConfig.classList.remove('hidden');
+                n8nWebhookInput.setAttribute('required', 'required');
+                setTimeout(() => n8nWebhookInput.focus(), 100);
+            } else {
+                n8nConfig.classList.add('hidden');
+                n8nWebhookInput.removeAttribute('required');
+                n8nWebhookInput.value = '';
+            }
+        });
+        </script>
+    </main>
+</body>
+</html>

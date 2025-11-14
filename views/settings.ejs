@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Sheet to Trello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <%- include('partials/header', { currentPage: 'settings', user: user }) %>
+
+    <main class="max-w-4xl mx-auto py-8 sm:px-6 lg:px-8">
+        <div class="px-4 sm:px-0">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
+                <p class="text-gray-600">Configure your Trello API credentials</p>
+            </div>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+            <div class="rounded-xl bg-red-50 border border-red-200 p-4 mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">
+                            <%= error %>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <% if (typeof success !== 'undefined' && success === 'true') { %>
+            <div class="rounded-xl bg-green-50 border border-green-200 p-4 mb-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-green-800">
+                            Trello credentials saved successfully!
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h2 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                    <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mr-3">
+                        <i class="fab fa-trello text-indigo-600"></i>
+                    </div>
+                    Trello Configuration
+                </h2>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-500 mt-0.5"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-semibold text-blue-900 mb-2">How to get your Trello API credentials:</h3>
+                            <ol class="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+                                <li>Go to <a href="https://trello.com/app-key" target="_blank" rel="noopener" class="underline font-medium">https://trello.com/app-key</a></li>
+                                <li>Copy your <strong>API Key</strong></li>
+                                <li>Click on "Token" link to generate a token</li>
+                                <li>Copy the generated <strong>Token</strong></li>
+                                <li>Paste both values below</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/settings/trello" method="POST" class="space-y-6">
+                    <div>
+                        <label for="trelloApiKey" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Trello API Key
+                        </label>
+                        <input 
+                            type="text" 
+                            id="trelloApiKey"
+                            name="trelloApiKey" 
+                            value="<%= typeof trelloApiKey !== 'undefined' ? trelloApiKey : '' %>"
+                            placeholder="Enter your Trello API Key" 
+                            required
+                            class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="trelloToken" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Trello Token
+                        </label>
+                        <input 
+                            type="password" 
+                            id="trelloToken"
+                            name="trelloToken" 
+                            value="<%= typeof trelloToken !== 'undefined' ? trelloToken : '' %>"
+                            placeholder="Enter your Trello Token" 
+                            required
+                            class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+                        >
+                        <p class="mt-2 text-xs text-gray-500">Your token will be stored securely and used to access your Trello boards.</p>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <a href="/dashboard" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                            Cancel
+                        </a>
+                        <button type="submit" class="px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                            <i class="fas fa-save mr-2"></i>Save Credentials
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
