@@ -1,4 +1,5 @@
 const serverless = require('@vendia/serverless-express');
+
 const { NestFactory } = require('@nestjs/core');
 const { AppModule } = require('../src/app.module');
 const express = require('express');
