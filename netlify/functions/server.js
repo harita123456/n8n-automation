@@ -1,6 +1,6 @@
 const serverless = require('@vendia/serverless-express');
 const { NestFactory } = require('@nestjs/core');
-const { AppModule } = '../src/app.module';
+const { AppModule } = require('../src/app.module');
 const express = require('express');
 const { join } = require('path');
 
@@ -22,7 +22,8 @@ async function bootstrapServer() {
   expressApp.set('views', viewsPath);
 
   // Add other middleware and configurations from your main.ts
-  // ...
+  expressApp.use(express.json());
+  expressApp.use(express.urlencoded({ extended: true }));
 
   await nestApp.init();
   return serverless.createServer(expressApp);
@@ -34,4 +35,3 @@ module.exports.handler = async (event, context) => {
   }
   return server(event, context);
 };
-```__
