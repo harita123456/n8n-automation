@@ -59,13 +59,21 @@ export class GoogleService {
     return response.data.files || [];
   }
 
-  async getSheetData(userId: string, sheetId: string): Promise<any[][]> {
+  async getSheetData(
+    userId: string,
+    sheetId: string,
+    maxRows: number = 1000,
+  ): Promise<any[][]> {
     const auth = await this.getOAuth2Client(userId);
     const sheets = google.sheets({ version: 'v4', auth });
 
+    // Limit range to prevent excessive memory usage
+    // Fetch only what's needed (A-Z columns, up to maxRows)
+    const range = `A1:Z${Math.min(maxRows, 1000)}`;
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: sheetId,
-      range: 'A1:Z1000', // Adjust range as needed
+      range,
     });
 
     return response.data.values || [];

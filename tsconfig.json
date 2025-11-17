@@ -7,7 +7,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -20,6 +20,9 @@
     "paths": {
       "@/*": ["src/*"]
     }
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }
 

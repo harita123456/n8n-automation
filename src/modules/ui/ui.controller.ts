@@ -462,13 +462,33 @@ export class UIController {
 
   @Post('sheet/upload')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: {
+        fileSize: 10 * 1024 * 1024, // 10MB limit to prevent memory issues
+      },
+    }),
+  )
   async uploadSheet(
     @Req() req: Request,
     @Res() res: Response,
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
+      if (!file) {
+        return res
+          .status(400)
+          .json({ success: false, error: 'No file uploaded' });
+      }
+
+      // Additional size check
+      if (file.size > 10 * 1024 * 1024) {
+        return res.status(400).json({
+          success: false,
+          error: 'File size exceeds 10MB limit',
+        });
+      }
+
       const milestones = await this.workflowsService.parseUploadedFile(file);
       // Store in session or return to frontend for workflow creation
       (req.session as any).uploadedMilestones = milestones;

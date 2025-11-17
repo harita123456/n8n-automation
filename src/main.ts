@@ -27,22 +27,25 @@ async function bootstrap() {
     : join(process.cwd(), 'public');
   app.useStaticAssets(publicPath);
 
-  // Body parser
-  app.use(json());
-  app.use(urlencoded({ extended: true }));
+  // Body parser with size limits to prevent memory issues
+  app.use(json({ limit: '10mb' })); // Limit JSON payload size
+  app.use(urlencoded({ extended: true, limit: '10mb' })); // Limit URL-encoded payload size
 
-  // Configure session
+  // Configure session with memory optimizations
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'your-secret-key',
-      resave: true, // Save session even if not modified
-      saveUninitialized: true, // Save uninitialized sessions
+      resave: false, // Don't save session if not modified (reduces memory)
+      saveUninitialized: false, // Don't save uninitialized sessions (reduces memory)
       cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
         secure: process.env.NODE_ENV === 'production', // HTTPS only in production
         httpOnly: true, // Prevent client-side JavaScript access
         sameSite: 'lax',
       },
+      // In production, consider using Redis or database session store
+      // For now, rolling: true helps with memory management
+      rolling: true, // Reset expiration on activity
     }),
   );
 
