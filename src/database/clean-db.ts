@@ -1,9 +1,9 @@
 /**
  * Standalone script to clean all database data
  * WARNING: This will delete ALL data from all tables!
- * 
+ *
  * This script is separate from migrations and will NOT run automatically.
- * 
+ *
  * Usage:
  *   npm run db:clean
  * Or:
@@ -79,4 +79,3 @@ if (require.main === module) {
 }
 
 export { cleanDatabase };
-
