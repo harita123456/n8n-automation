@@ -4,7 +4,7 @@ services:
     env: node
     plan: free
     buildCommand: npm ci && NODE_OPTIONS="--max-old-space-size=2048" npm run build
-    startCommand: NODE_OPTIONS="--max-old-space-size=1024" npm run start:prod
+    startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
@@ -12,5 +12,6 @@ services:
         value: 10000
     healthCheckPath: /
     autoDeploy: true
+
 
 
