@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
+import { join } from 'path';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { GoogleService } from '../google/google.service';
 import { TrelloService } from '../trello/trello.service';
@@ -42,7 +43,18 @@ export class UIController {
     }
   }
 
-  // Suppress .well-known and favicon errors
+  // Serve .well-known files (security.txt, etc.)
+  @Get('.well-known/security.txt')
+  securityTxt(@Res() res: Response) {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const publicPath = isProduction
+      ? join(__dirname, '../../../public')
+      : join(process.cwd(), 'public');
+    const securityTxtPath = join(publicPath, '.well-known', 'security.txt');
+    return res.sendFile(securityTxtPath);
+  }
+
+  // Suppress other .well-known and favicon errors
   @Get('.well-known/*')
   @Get('favicon.ico')
   notFound() {

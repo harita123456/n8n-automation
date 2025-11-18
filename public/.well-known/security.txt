@@ -1,0 +1,10 @@
+Contact: mailto:your-email@example.com
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://n8n-automation-5a6l.onrender.com/.well-known/security.txt
+Policy: https://n8n-automation-5a6l.onrender.com
+Hiring: https://n8n-automation-5a6l.onrender.com
+
+# This is a legitimate automation application using Google OAuth
+# For security concerns, please contact the email above
+
