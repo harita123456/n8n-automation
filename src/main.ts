@@ -25,7 +25,10 @@ async function bootstrap() {
   const publicPath = isProduction
     ? join(__dirname, 'public')
     : join(process.cwd(), 'public');
-  app.useStaticAssets(publicPath);
+  // Serve static files from root path (for Google verification files, etc.)
+  app.useStaticAssets(publicPath, {
+    prefix: '/',
+  });
 
   // Body parser with size limits to prevent memory issues
   app.use(json({ limit: '10mb' })); // Limit JSON payload size
