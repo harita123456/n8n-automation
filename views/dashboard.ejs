@@ -8,10 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
-    <%- include('partials/header', { currentPage: 'dashboard', user: user }) %>
+    <div class="flex flex-col min-h-screen">
+        <%- include('partials/header', { currentPage: 'dashboard', user: user }) %>
 
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0">
+        <main class="flex-1 w-full pb-20 relative">
+            <!-- Fade gradient overlay at bottom -->
+            <div class="fixed bottom-16 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent pointer-events-none z-0"></div>
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div>
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
                 <p class="mt-2 text-sm text-gray-600">Manage your automation workflows</p>
@@ -142,9 +146,8 @@
                 </div>
                 <% } %>
             </div>
-        </div>
 
-    </main>
+        </main>
 
     <script>
     async function handleFileUpload(event) {
@@ -173,5 +176,9 @@
         }
     }
     </script>
+            </div>
+        </main>
+        <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
+    </div>
 </body>
 </html>

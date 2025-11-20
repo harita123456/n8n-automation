@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Sheet to Trello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="flex flex-col min-h-screen">
+        <% if (typeof user !== 'undefined' && user) { %>
+            <%- include('partials/header', { currentPage: null, user: user }) %>
+        <% } else { %>
+            <nav class="bg-white border-b border-gray-200 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <a href="/" class="flex items-center space-x-3">
+                            <div class="w-11 h-11 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
+                                <i class="fab fa-trello text-white text-xl"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <h1 class="text-lg font-bold text-gray-900 leading-tight">Sheet to Trello</h1>
+                                <p class="text-xs text-gray-500">Automation Platform</p>
+                            </div>
+                        </a>
+                        <a href="/login" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        <% } %>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full pb-20 relative">
+            <!-- Fade gradient overlay at bottom -->
+            <div class="fixed bottom-16 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 to-transparent pointer-events-none z-0"></div>
+            <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
+                    <p class="text-sm text-gray-600">Last updated: <%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                </div>
+
+                <div class="prose prose-blue max-w-none">
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-handshake text-blue-600 mr-3"></i>
+                            Agreement to Terms
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            By accessing or using Sheet to Trello ("Service," "we," "us," or "our"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            These Terms apply to all visitors, users, and others who access or use the Service. Your use of the Service is also governed by our Privacy Policy, which is incorporated into these Terms by reference.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-info-circle text-blue-600 mr-3"></i>
+                            Description of Service
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Sheet to Trello is an automation platform that enables users to:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Connect their Google Sheets and Trello accounts</li>
+                            <li>Read milestone data from Google Sheets (read-only access)</li>
+                            <li>Automatically create Trello cards based on milestone information</li>
+                            <li>Manage workflow configurations and automation settings</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            The Service acts as an intermediary between Google Sheets and Trello, facilitating data transfer for workflow automation purposes.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-user-check text-blue-600 mr-3"></i>
+                            User Accounts and Eligibility
+                        </h2>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">Eligibility</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            You must be at least 13 years old to use this Service. By using the Service, you represent and warrant that:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>You are at least 13 years of age</li>
+                            <li>You have the legal capacity to enter into these Terms</li>
+                            <li>You will comply with all applicable laws and regulations</li>
+                            <li>You have the authority to grant the permissions required for the Service to access your Google Sheets and Trello accounts</li>
+                        </ul>
+
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">Account Responsibility</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            You are responsible for:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>Maintaining the confidentiality of your account credentials</li>
+                            <li>All activities that occur under your account</li>
+                            <li>Ensuring the accuracy of information you provide</li>
+                            <li>Notifying us immediately of any unauthorized use of your account</li>
+                        </ul>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-key text-blue-600 mr-3"></i>
+                            Third-Party Services and Permissions
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Our Service integrates with third-party services:
+                        </p>
+                        
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">Google Services</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>You grant us read-only access to your Google Sheets and Google Drive</li>
+                            <li>We use Google OAuth for authentication and API access</li>
+                            <li>Your use of Google services is also subject to Google's Terms of Service</li>
+                            <li>You can revoke access at any time through your Google account settings</li>
+                        </ul>
+
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">Trello Services</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>You provide Trello API credentials (API Key and Token) for card creation</li>
+                            <li>We use these credentials solely to create Trello cards on your behalf</li>
+                            <li>Your use of Trello is subject to Trello's Terms of Service</li>
+                            <li>You are responsible for managing your Trello API credentials securely</li>
+                        </ul>
+
+                        <p class="text-gray-700 leading-relaxed mt-4">
+                            By using our Service, you acknowledge that we are not responsible for the availability, accuracy, or content of third-party services.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-shield-alt text-blue-600 mr-3"></i>
+                            Acceptable Use
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">You agree not to:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Use the Service for any illegal or unauthorized purpose</li>
+                            <li>Violate any laws in your jurisdiction</li>
+                            <li>Transmit any viruses, malware, or harmful code</li>
+                            <li>Attempt to gain unauthorized access to the Service or related systems</li>
+                            <li>Interfere with or disrupt the Service or servers</li>
+                            <li>Use the Service to spam, harass, or harm others</li>
+                            <li>Reverse engineer, decompile, or disassemble the Service</li>
+                            <li>Use automated systems to access the Service without permission</li>
+                            <li>Share your account credentials with others</li>
+                        </ul>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-lock text-blue-600 mr-3"></i>
+                            Data and Privacy
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Your use of the Service is also governed by our Privacy Policy. Key points:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>We only access your Google Sheets with read-only permissions</li>
+                            <li>We do not permanently store the content of your Google Sheets</li>
+                            <li>Your Trello credentials are encrypted before storage</li>
+                            <li>You can delete your account and all associated data at any time</li>
+                            <li>You can revoke Google OAuth access at any time</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            Please review our Privacy Policy to understand how we collect, use, and protect your information.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-blue-600 mr-3"></i>
+                            Disclaimers and Limitations of Liability
+                        </h2>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-yellow-900 font-semibold mb-2">⚠️ Important Notice</p>
+                            <p class="text-sm text-yellow-800">
+                                The Service is provided "as is" and "as available" without warranties of any kind, either express or implied.
+                            </p>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            We do not warrant that:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>The Service will be uninterrupted, secure, or error-free</li>
+                            <li>Any defects will be corrected</li>
+                            <li>The Service will meet your specific requirements</li>
+                            <li>Results from using the Service will be accurate or reliable</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            To the maximum extent permitted by law, we shall not be liable for:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>Any indirect, incidental, special, or consequential damages</li>
+                            <li>Loss of profits, data, or business opportunities</li>
+                            <li>Service interruptions or downtime</li>
+                            <li>Issues arising from third-party services (Google, Trello)</li>
+                            <li>Data loss or corruption</li>
+                        </ul>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-ban text-blue-600 mr-3"></i>
+                            Indemnification
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            You agree to indemnify, defend, and hold harmless Sheet to Trello, its officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-4">
+                            <li>Your use of the Service</li>
+                            <li>Your violation of these Terms</li>
+                            <li>Your violation of any rights of another party</li>
+                            <li>Your violation of any applicable laws or regulations</li>
+                        </ul>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-gavel text-blue-600 mr-3"></i>
+                            Intellectual Property
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            The Service and its original content, features, and functionality are owned by Sheet to Trello and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            You retain ownership of all data you provide to the Service. By using the Service, you grant us a limited license to use your data solely for the purpose of providing the Service to you.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-power-off text-blue-600 mr-3"></i>
+                            Termination
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            We may terminate or suspend your account and access to the Service immediately, without prior notice, for any reason, including:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Breach of these Terms</li>
+                            <li>Fraudulent, abusive, or illegal activity</li>
+                            <li>Extended periods of inactivity</li>
+                            <li>At our sole discretion</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            You may terminate your account at any time by deleting your account through the Service or by contacting us. Upon termination, your right to use the Service will immediately cease, and we will delete your account data in accordance with our Privacy Policy.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-edit text-blue-600 mr-3"></i>
+                            Changes to Terms
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            We reserve the right to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion. Your continued use of the Service after any changes constitutes acceptance of the new Terms.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-balance-scale text-blue-600 mr-3"></i>
+                            Governing Law
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            These Terms shall be governed by and construed in accordance with applicable laws, without regard to its conflict of law provisions. Any disputes arising from these Terms or the Service shall be resolved through appropriate legal channels.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-file-contract text-blue-600 mr-3"></i>
+                            Severability
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed">
+                            If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.
+                        </p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-envelope text-blue-600 mr-3"></i>
+                            Contact Information
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            If you have any questions about these Terms of Service, please contact us:
+                        </p>
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                            <p class="text-gray-700">
+                                <strong>Email:</strong> <a href="mailto:hdumradiya.weapplinse@gmail.com" class="text-blue-600 hover:text-blue-800 underline">hdumradiya.weapplinse@gmail.com</a><br>
+                                <strong>Support:</strong> Available through the application dashboard
+                            </p>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <a href="/dashboard" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </a>
+                    <% } else { %>
+                        <a href="/login" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Login
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+        <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
+    </div>
+</body>
+</html>
+

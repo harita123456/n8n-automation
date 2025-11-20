@@ -1,0 +1,18 @@
+<footer class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 z-10 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div class="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+            <p class="text-sm text-gray-600">
+                © <%= typeof currentYear !== 'undefined' ? currentYear : new Date().getFullYear() %> Sheet to Trello. All rights reserved.
+            </p>
+            <div class="flex space-x-6">
+                <a href="/privacy-policy" class="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-shield-alt mr-1.5 text-xs"></i>Privacy Policy
+                </a>
+                <a href="/terms" class="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-file-contract mr-1.5 text-xs"></i>Terms of Service
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+

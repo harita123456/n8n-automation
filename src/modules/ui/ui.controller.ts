@@ -70,6 +70,26 @@ export class UIController {
     };
   }
 
+  @Get('privacy-policy')
+  @Render('privacy-policy')
+  privacyPolicy(@Req() req: Request) {
+    const user = (req as any).user;
+    return {
+      user: user || null,
+      currentPage: null,
+    };
+  }
+
+  @Get('terms')
+  @Render('terms')
+  termsOfService(@Req() req: Request) {
+    const user = (req as any).user;
+    return {
+      user: user || null,
+      currentPage: null,
+    };
+  }
+
   @Get('dashboard')
   @UseGuards(AuthGuard)
   @Render('dashboard')
