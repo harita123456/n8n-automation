@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sheet to Trello - Automate your workflow by connecting Google Sheets to Trello. Create Trello cards from spreadsheet data automatically.">
+    <title>Sheet to Trello - Automation Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fab fa-trello text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-900">Sheet to Trello</h1>
+                        <p class="text-xs text-gray-500">Automation Platform</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/privacy-policy" class="text-sm text-gray-600 hover:text-blue-600">Privacy Policy</a>
+                    <a href="/terms" class="text-sm text-gray-600 hover:text-blue-600">Terms</a>
+                    <a href="/login" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold text-gray-900 mb-4">
+                    Automate Your Workflow
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Connect Google Sheets to Trello and create cards automatically from your spreadsheet data. Streamline your project management workflow.
+                </p>
+                <a href="/login" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                    <i class="fab fa-google mr-2"></i>
+                    Sign in with Google
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6 rounded-xl bg-gray-50">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-google-drive text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Connect Google Sheets</h3>
+                    <p class="text-gray-600">Select your Google Sheet or upload an Excel/CSV file with your project data.</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gray-50">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fab fa-trello text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Select Trello Board</h3>
+                    <p class="text-gray-600">Choose your Trello board and list where cards should be created.</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gray-50">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-magic text-3xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Automate</h3>
+                    <p class="text-gray-600">Review and run your workflow. Cards are created automatically from your data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Usage Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Data Usage & Privacy</h2>
+            <div class="bg-white rounded-xl shadow-sm p-8 space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">What Data We Access</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                            <span><strong>Google Sheets API (Read-only):</strong> To read your spreadsheet data and create Trello cards</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                            <span><strong>Google Drive API (Read-only):</strong> To list and access your Google Sheets</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                            <span><strong>Basic Profile Information:</strong> Email and name for account identification</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">How We Use Your Data</h3>
+                    <p class="text-gray-600 mb-2">
+                        We use your Google Sheets data <strong>only</strong> to create Trello cards based on your workflow configuration. 
+                        Your data is processed in real-time and is not stored permanently on our servers.
+                    </p>
+                    <p class="text-gray-600">
+                        We store only your authentication tokens (encrypted) and workflow configurations. 
+                        Your actual spreadsheet data is never stored - it's read directly from Google Sheets when you run a workflow.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">Data Security</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-blue-500 mr-2 mt-1"></i>
+                            <span>All API credentials are encrypted before storage</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-blue-500 mr-2 mt-1"></i>
+                            <span>Read-only access to your Google Sheets - we cannot modify your data</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-shield-alt text-blue-500 mr-2 mt-1"></i>
+                            <span>HTTPS encryption for all data transmission</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pt-4 border-t">
+                    <a href="/privacy-policy" class="text-blue-600 hover:text-blue-700 font-medium">
+                        Read our full Privacy Policy →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-600 text-sm">
+                        © 2025 Sheet to Trello. All rights reserved.
+                    </p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="/privacy-policy" class="text-sm text-gray-600 hover:text-blue-600">Privacy Policy</a>
+                    <a href="/terms" class="text-sm text-gray-600 hover:text-blue-600">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

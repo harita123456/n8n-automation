@@ -34,13 +34,13 @@ export class UIController {
   ) {}
 
   @Get()
-  root(@Req() req: Request, @Res() res: Response) {
-    // Redirect to login if not authenticated, otherwise to dashboard
-    if ((req as any).user) {
-      res.redirect('/dashboard');
-    } else {
-      res.redirect('/login');
-    }
+  @Render('homepage')
+  root(@Req() req: Request) {
+    // Homepage must be visible without login for Google OAuth verification
+    // This meets Google's requirement: "Visible to users without requiring them to log-in"
+    return {
+      user: (req as any).user || null,
+    };
   }
 
   // Serve .well-known files (security.txt, etc.)

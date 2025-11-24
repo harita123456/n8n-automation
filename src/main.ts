@@ -102,13 +102,13 @@ async function bootstrap() {
   const app_url = process.env.APP_URL || `http://localhost:${port}`;
   await app.listen(port);
   console.log(`Application is running on: ${app_url}`);
-  console.log(`Google Client ID: ${process.env.GOOGLE_CLIENT_ID}`);
-  console.log(`Google Client Secret: ${process.env.GOOGLE_CLIENT_SECRET}`);
-  console.log(`Trello API Key: ${process.env.TRELLO_API_KEY}`);
-  console.log(`Trello Token: ${process.env.TRELLO_TOKEN}`);
-  console.log(`Database URL: ${process.env.DATABASE_URL}`);
-  console.log(`Session Secret: ${process.env.SESSION_SECRET}`);
-  console.log(`Encryption Key: ${process.env.ENCRYPTION_KEY}`);
+  // console.log(`Google Client ID: ${process.env.GOOGLE_CLIENT_ID}`);
+  // console.log(`Google Client Secret: ${process.env.GOOGLE_CLIENT_SECRET}`);
+  // console.log(`Trello API Key: ${process.env.TRELLO_API_KEY}`);
+  // console.log(`Trello Token: ${process.env.TRELLO_TOKEN}`);
+  // console.log(`Database URL: ${process.env.DATABASE_URL}`);
+  // console.log(`Session Secret: ${process.env.SESSION_SECRET}`);
+  // console.log(`Encryption Key: ${process.env.ENCRYPTION_KEY}`);
 }
 
 bootstrap();
