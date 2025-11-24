@@ -43,6 +43,16 @@ export class UIController {
     };
   }
 
+  // Health check endpoint for Render and monitoring services
+  @Get('health')
+  healthCheck(@Res() res: Response) {
+    return res.status(200).json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+    });
+  }
+
   // Serve .well-known files (security.txt, etc.)
   @Get('.well-known/security.txt')
   securityTxt(@Res() res: Response) {
