@@ -124,25 +124,54 @@ export class UIController {
   async sheetSelect(@Req() req: Request) {
     const user = (req as any).user;
     const dbUser = await this.usersRepository.findById(user.id);
+    const error = req.query.error as string | undefined;
+
+    return {
+      user: {
+        ...user,
+        email: dbUser?.email || user.email,
+      },
+      error: error || null,
+    };
+  }
+
+  @Post('sheet/validate')
+  @UseGuards(AuthGuard)
+  async validateSheet(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body('sheetUrl') sheetUrl: string,
+  ) {
+    const user = (req as any).user;
+
+    if (!sheetUrl || !sheetUrl.trim()) {
+      return res.redirect(
+        '/sheet/select?error=' +
+          encodeURIComponent('Please enter a Google Sheet URL or ID'),
+      );
+    }
+
     try {
-      const sheets = await this.googleService.listSheets(user.id);
-      return {
-        user: {
-          ...user,
-          email: dbUser?.email || user.email,
-        },
-        sheets,
-        error: null,
-      };
+      const sheetInfo = await this.googleService.validateSheet(
+        user.id,
+        sheetUrl,
+      );
+
+      // Redirect to Trello selection with validated sheet info
+      return res.redirect(
+        `/trello/select?sheetId=${sheetInfo.id}&sheetName=${encodeURIComponent(sheetInfo.title || 'Untitled Sheet')}`,
+      );
     } catch (error: any) {
-      return {
-        user: {
-          ...user,
-          email: dbUser?.email || user.email,
-        },
-        sheets: [],
-        error: error.message,
-      };
+      const errorMessage =
+        error.message ||
+        'Failed to access Google Sheet. Please ensure:\n' +
+          '1. The sheet URL or ID is correct\n' +
+          '2. The sheet is shared with your Google account\n' +
+          '3. You have permission to view the sheet';
+
+      return res.redirect(
+        '/sheet/select?error=' + encodeURIComponent(errorMessage),
+      );
     }
   }
 

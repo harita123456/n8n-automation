@@ -4,20 +4,21 @@
     <%- include('partials/head', { title: 'Select Google Sheet - Sheet to Trello' }) %>
 </head>
 <body class="bg-gray-50">
-    <%- include('partials/header', { currentPage: 'workflow', user: user }) %>
+    <div class="flex flex-col min-h-screen">
+        <%- include('partials/header', { currentPage: 'workflow', user: user }) %>
 
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0">
+        <main class="flex-1 w-full pb-20">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900">Select Google Sheet</h1>
-                <p class="mt-2 text-sm text-gray-600">Choose a sheet from your Google Drive</p>
+                <p class="mt-2 text-sm text-gray-600">Enter your Google Sheet URL or ID</p>
             </div>
 
             <% if (error) { %>
-            <div class="rounded-md bg-red-50 p-4 mb-6">
-                <div class="flex">
+            <div class="rounded-xl bg-red-50 border border-red-200 p-4 mb-6">
+                <div class="flex items-start">
                     <div class="flex-shrink-0">
-                        <i class="fas fa-exclamation-circle text-red-400"></i>
+                        <i class="fas fa-exclamation-circle text-red-500 mt-0.5"></i>
                     </div>
                     <div class="ml-3">
                         <h3 class="text-sm font-medium text-red-800">
@@ -28,49 +29,79 @@
             </div>
             <% } %>
 
-            <% if (sheets && sheets.length > 0) { %>
-            <div class="bg-white shadow overflow-hidden sm:rounded-md">
-                <ul class="divide-y divide-gray-200">
-                    <% sheets.forEach(function(sheet) { %>
-                    <li>
-                        <a href="/trello/select?sheetId=<%= sheet.id %>&sheetName=<%= encodeURIComponent(sheet.name) %>" class="block hover:bg-gray-50">
-                            <div class="px-4 py-4 sm:px-6">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-file-excel text-green-500 text-2xl mr-3"></i>
-                                        <p class="text-sm font-medium text-gray-900">
-                                            <%= sheet.name %>
-                                        </p>
-                                    </div>
-                                    <div class="ml-2 flex-shrink-0">
-                                        <i class="fas fa-chevron-right text-gray-400"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-2">
-                                    <p class="text-sm text-gray-500">
-                                        Modified: <%= new Date(sheet.modifiedTime).toLocaleDateString() %>
-                                    </p>
-                                </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <form action="/sheet/validate" method="POST" class="space-y-6">
+                    <div>
+                        <label for="sheetUrl" class="block text-sm font-semibold text-gray-900 mb-2">
+                            Google Sheet URL or ID
+                        </label>
+                        <input 
+                            type="text" 
+                            id="sheetUrl"
+                            name="sheetUrl" 
+                            placeholder="https://docs.google.com/spreadsheets/d/1ABC123.../edit or just the Sheet ID"
+                            required
+                            class="mt-1.5 block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-300"
+                        >
+                        <p class="mt-2 text-xs text-gray-500">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Paste your Google Sheet URL or just the Sheet ID. You can find it in your sheet's URL.
+                        </p>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-lightbulb text-blue-500 mt-0.5"></i>
                             </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-semibold text-blue-900 mb-1">How to find your Sheet ID:</h3>
+                                <ol class="text-xs text-blue-800 space-y-1 list-decimal list-inside">
+                                    <li>Open your Google Sheet</li>
+                                    <li>Look at the URL in your browser</li>
+                                    <li>Copy the long ID between <code class="bg-blue-100 px-1 rounded">/d/</code> and <code class="bg-blue-100 px-1 rounded">/edit</code></li>
+                                    <li>Or paste the entire URL - we'll extract the ID automatically</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <a href="/dashboard" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                            Cancel
                         </a>
-                    </li>
-                    <% }); %>
-                </ul>
+                        <button type="submit" class="px-6 py-3 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+                            <i class="fas fa-arrow-right mr-2"></i>Continue
+                        </button>
+                    </div>
+                </form>
             </div>
-            <% } else { %>
-            <div class="bg-white shadow rounded-lg p-6 text-center">
-                <i class="fas fa-folder-open text-4xl text-gray-400 mb-4"></i>
-                <p class="text-gray-500">No Google Sheets found in your Drive</p>
-            </div>
-            <% } %>
 
             <div class="mt-6">
                 <a href="/dashboard" class="text-sm font-medium text-blue-600 hover:text-blue-500">
                     ← Back to Dashboard
                 </a>
             </div>
-        </div>
-    </main>
+            </div>
+        </main>
+        <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
+    </div>
     <%- include('partials/modal') %>
+    <script>
+        // Logout handler
+        async function handleLogout(event) {
+            event.preventDefault();
+            const confirmed = await customModal.show({
+                title: 'Logout',
+                message: 'Are you sure you want to logout?',
+                confirmText: 'Logout',
+                cancelText: 'Cancel',
+                type: 'warning'
+            });
+            if (confirmed) {
+                window.location.href = '/auth/logout';
+            }
+        }
+    </script>
 </body>
 </html>

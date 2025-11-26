@@ -173,5 +173,21 @@
         </div>
     </main>
     <%- include('partials/modal') %>
+    <script>
+        // Logout handler
+        async function handleLogout(event) {
+            event.preventDefault();
+            const confirmed = await customModal.show({
+                title: 'Logout',
+                message: 'Are you sure you want to logout?',
+                confirmText: 'Logout',
+                cancelText: 'Cancel',
+                type: 'warning'
+            });
+            if (confirmed) {
+                window.location.href = '/auth/logout';
+            }
+        }
+    </script>
 </body>
 </html>

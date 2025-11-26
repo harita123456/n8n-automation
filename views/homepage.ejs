@@ -26,7 +26,7 @@
                             </a>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <a href="/auth/google" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md">
+                            <a href="/login" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md">
                                 <i class="fab fa-google mr-2"></i><span class="hidden sm:inline">Get Started</span><span class="sm:hidden">Start</span>
                             </a>
                         </div>
@@ -146,6 +146,22 @@
         <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
         <%- include('partials/modal') %>
     </div>
+    <script>
+        // Logout handler
+        async function handleLogout(event) {
+            event.preventDefault();
+            const confirmed = await customModal.show({
+                title: 'Logout',
+                message: 'Are you sure you want to logout?',
+                confirmText: 'Logout',
+                cancelText: 'Cancel',
+                type: 'warning'
+            });
+            if (confirmed) {
+                window.location.href = '/auth/logout';
+            }
+        }
+    </script>
 </body>
 </html>
 

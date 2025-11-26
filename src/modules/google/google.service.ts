@@ -45,18 +45,45 @@ export class GoogleService {
     return oauth2Client;
   }
 
-  async listSheets(userId: string) {
-    const auth = await this.getOAuth2Client(userId);
-    const drive = google.drive({ version: 'v3', auth });
+  /**
+   * Extract Google Sheet ID from URL or return the ID if already provided
+   * Supports formats:
+   * - https://docs.google.com/spreadsheets/d/{ID}/edit
+   * - https://docs.google.com/spreadsheets/d/{ID}/edit#gid=0
+   * - Just the ID itself
+   */
+  extractSheetId(urlOrId: string): string {
+    if (!urlOrId || !urlOrId.trim()) {
+      throw new Error('Sheet URL or ID is required');
+    }
 
-    const response = await drive.files.list({
-      q: "mimeType='application/vnd.google-apps.spreadsheet'",
-      fields: 'files(id, name, modifiedTime)',
-      orderBy: 'modifiedTime desc',
-      pageSize: 50,
-    });
+    const trimmed = urlOrId.trim();
 
-    return response.data.files || [];
+    // If it's already just an ID (alphanumeric, dashes, underscores, typically 44 chars)
+    if (/^[a-zA-Z0-9_-]{30,}$/.test(trimmed)) {
+      return trimmed;
+    }
+
+    // Try to extract from URL
+    const urlPattern = /\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/;
+    const match = trimmed.match(urlPattern);
+
+    if (match && match[1]) {
+      return match[1];
+    }
+
+    throw new Error(
+      'Invalid Google Sheet URL or ID. Please provide a valid Google Sheet URL or ID.',
+    );
+  }
+
+  /**
+   * Validate and get sheet info (checks if sheet exists and is accessible)
+   */
+  async validateSheet(userId: string, urlOrId: string) {
+    const sheetId = this.extractSheetId(urlOrId);
+    const sheetInfo = await this.getSheetInfo(userId, sheetId);
+    return sheetInfo;
   }
 
   async getSheetData(
