@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sheet to Trello</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <%- include('partials/head', { title: 'Dashboard - Sheet to Trello' }) %>
 </head>
 <body class="bg-gray-50">
     <div class="flex flex-col min-h-screen">
@@ -47,7 +43,7 @@
                 </div>
                 <a href="/sheet/select" class="group bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl hover:shadow-lg hover:border-green-200 transition-all duration-300 transform hover:scale-[1.02] block w-full">
                     <div class="p-6">
-                        <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center justify-between gap-4 mb-5">
                             <div class="flex items-center gap-3 flex-1 min-w-0">
                                 <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors duration-300 flex-shrink-0">
                                     <i class="fas fa-file-excel text-lg text-green-600"></i>
@@ -66,7 +62,7 @@
 
                 <button onclick="document.getElementById('fileInput').click()" class="group bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl hover:shadow-lg hover:border-blue-200 transition-all duration-300 transform hover:scale-[1.02] block w-full text-left">
                     <div class="p-6">
-                        <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center justify-between gap-4 mb-5">
                             <div class="flex items-center gap-3 flex-1 min-w-0">
                                 <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300 flex-shrink-0">
                                     <i class="fas fa-upload text-lg text-blue-600"></i>
@@ -86,7 +82,7 @@
             </div>
 
             <div class="mt-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Workflows</h2>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Recent Workflows</h2>
                 <% if (workflows && workflows.length > 0) { %>
                 <div class="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
                     <ul class="divide-y divide-gray-100">
@@ -124,7 +120,7 @@
                                         <a href="/workflow/review/<%= workflow.id %>" class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-150">
                                             Review
                                         </a>
-                                        <form action="/workflow/delete/<%= workflow.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this workflow?');" class="inline">
+                                        <form action="/workflow/delete/<%= workflow.id %>" method="POST" onsubmit="return handleDeleteWorkflow(event, this);" class="inline">
                                             <button type="submit" class="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors duration-150">
                                                 Delete
                                             </button>
@@ -150,6 +146,22 @@
         </main>
 
     <script>
+    // Delete workflow handler
+    async function handleDeleteWorkflow(event, form) {
+        event.preventDefault();
+        const confirmed = await customModal.show({
+            title: 'Delete Workflow',
+            message: 'Are you sure you want to delete this workflow? This action cannot be undone.',
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+            type: 'danger'
+        });
+        if (confirmed) {
+            form.submit();
+        }
+        return false;
+    }
+
     async function handleFileUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -165,20 +177,58 @@
 
             const data = await response.json();
             if (data.success) {
-                alert('File uploaded successfully! ' + data.count + ' milestones found.');
+                await customModal.show({
+                    title: 'Success',
+                    message: 'File uploaded successfully! ' + data.count + ' milestones found.',
+                    confirmText: 'Continue',
+                    cancelText: null,
+                    type: 'success',
+                    onCancel: () => {}
+                });
                 // Redirect to workflow creation
                 window.location.href = '/trello/select?milestones=' + encodeURIComponent(JSON.stringify(data.milestones));
             } else {
-                alert('Upload failed: ' + data.error);
+                await customModal.show({
+                    title: 'Upload Failed',
+                    message: data.error || 'Failed to upload file. Please try again.',
+                    confirmText: 'OK',
+                    cancelText: null,
+                    type: 'danger',
+                    onCancel: () => {}
+                });
             }
         } catch (error) {
-            alert('Upload failed: ' + error.message);
+            await customModal.show({
+                title: 'Error',
+                message: 'Upload failed: ' + error.message,
+                confirmText: 'OK',
+                cancelText: null,
+                type: 'danger',
+                onCancel: () => {}
+            });
         }
     }
     </script>
             </div>
         </main>
         <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
+        <%- include('partials/modal') %>
     </div>
+    <script>
+        // Logout handler
+        async function handleLogout(event) {
+            event.preventDefault();
+            const confirmed = await customModal.show({
+                title: 'Logout',
+                message: 'Are you sure you want to logout?',
+                confirmText: 'Logout',
+                cancelText: 'Cancel',
+                type: 'warning'
+            });
+            if (confirmed) {
+                window.location.href = '/auth/logout';
+            }
+        }
+    </script>
 </body>
 </html>

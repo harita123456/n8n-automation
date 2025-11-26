@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sheet to Trello - Automate your workflow by connecting Google Sheets to Trello. Create Trello cards from spreadsheet data automatically.">
-    <title>Sheet to Trello - Automation Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <%- include('partials/head', { 
+        title: 'Sheet to Trello - Automation Platform',
+        description: 'Sheet to Trello - Automate your workflow by connecting Google Sheets to Trello. Create Trello cards from spreadsheet data automatically.'
+    }) %>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <nav class="bg-white border-b border-gray-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                        <i class="fab fa-trello text-white text-lg"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-gray-900">Sheet to Trello</h1>
-                        <p class="text-xs text-gray-500">Automation Platform</p>
+    <div class="flex flex-col min-h-screen">
+        <% if (typeof user !== 'undefined' && user) { %>
+            <%- include('partials/header', { currentPage: null, user: user }) %>
+        <% } else { %>
+            <nav class="bg-white border-b border-gray-200 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center space-x-3">
+                            <a href="/" class="flex items-center space-x-3 group">
+                                <div class="w-11 h-11 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-200 group-hover:scale-105">
+                                    <i class="fab fa-trello text-white text-xl"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <h1 class="text-lg font-bold text-gray-900 leading-tight">Sheet to Trello</h1>
+                                    <p class="text-xs text-gray-500 hidden sm:block">Automation Platform</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <a href="/auth/google" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md">
+                                <i class="fab fa-google mr-2"></i><span class="hidden sm:inline">Get Started</span><span class="sm:hidden">Start</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/privacy-policy" class="text-sm text-gray-600 hover:text-blue-600">Privacy Policy</a>
-                    <a href="/terms" class="text-sm text-gray-600 hover:text-blue-600">Terms</a>
-                    <a href="/login" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                        Get Started
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+            </nav>
+        <% } %>
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-20">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-5xl font-bold text-gray-900 mb-4">
@@ -51,10 +53,10 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="py-16 bg-white">
+        <!-- Features Section -->
+        <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+            <h2 class="text-2xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center p-6 rounded-xl bg-gray-50">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -81,10 +83,10 @@
         </div>
     </section>
 
-    <!-- Data Usage Section -->
-    <section class="py-16 bg-gray-50">
+        <!-- Data Usage Section -->
+        <section class="py-16 bg-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Data Usage & Privacy</h2>
+            <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">Data Usage & Privacy</h2>
             <div class="bg-white rounded-xl shadow-sm p-8 space-y-6">
                 <div>
                     <h3 class="text-xl font-semibold mb-3">What Data We Access</h3>
@@ -140,22 +142,10 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <p class="text-gray-600 text-sm">
-                        © 2025 Sheet to Trello. All rights reserved.
-                    </p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="/privacy-policy" class="text-sm text-gray-600 hover:text-blue-600">Privacy Policy</a>
-                    <a href="/terms" class="text-sm text-gray-600 hover:text-blue-600">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+        <!-- Footer -->
+        <%- include('partials/footer', { currentYear: new Date().getFullYear() }) %>
+        <%- include('partials/modal') %>
+    </div>
 </body>
 </html>
 

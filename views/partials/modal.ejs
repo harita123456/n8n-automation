@@ -1,0 +1,207 @@
+<!-- Custom Modal Component -->
+<div id="customModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" id="modalOverlay"></div>
+
+        <!-- Center modal -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <!-- Modal panel -->
+        <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-6 pt-6 pb-4">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl" id="modalIcon"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 text-center mb-2" id="modalTitle">
+                    Confirm Action
+                </h3>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-600 text-center" id="modalMessage">
+                        Are you sure you want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex flex-col sm:flex-row-reverse gap-3">
+                <button type="button" id="modalConfirmBtn" class="w-full sm:w-auto inline-flex justify-center items-center px-6 py-2.5 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-sm hover:shadow-md">
+                    <span id="modalConfirmText">Confirm</span>
+                </button>
+                <button type="button" id="modalCancelBtn" class="w-full sm:w-auto inline-flex justify-center items-center px-6 py-2.5 border border-gray-300 text-sm font-semibold rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Custom Modal Handler
+class CustomModal {
+    constructor() {
+        this.modal = document.getElementById('customModal');
+        this.overlay = document.getElementById('modalOverlay');
+        this.title = document.getElementById('modalTitle');
+        this.message = document.getElementById('modalMessage');
+        this.icon = document.getElementById('modalIcon');
+        this.confirmBtn = document.getElementById('modalConfirmBtn');
+        this.cancelBtn = document.getElementById('modalCancelBtn');
+        this.confirmText = document.getElementById('modalConfirmText');
+        
+        this.resolvePromise = null;
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        // Close on overlay click
+        this.overlay.addEventListener('click', () => {
+            if (!this.modal.classList.contains('hidden')) {
+                this.close(false);
+            }
+        });
+        
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+                this.close(false);
+            }
+        });
+    }
+
+    show(options = {}) {
+        const {
+            title = 'Confirm Action',
+            message = 'Are you sure you want to proceed?',
+            confirmText = 'Confirm',
+            cancelText = 'Cancel',
+            type = 'warning', // 'warning', 'info', 'success', 'danger'
+            onConfirm = null,
+            onCancel = null
+        } = options;
+
+        // Set content
+        this.title.textContent = title;
+        this.message.textContent = message;
+        this.confirmText.textContent = confirmText;
+        
+        // Handle cancel button visibility
+        if (cancelText === null) {
+            this.cancelBtn.style.display = 'none';
+        } else {
+            this.cancelBtn.style.display = 'inline-flex';
+            this.cancelBtn.textContent = cancelText;
+        }
+
+        // Set icon and colors based on type
+        this.setModalType(type);
+
+        // Show modal
+        this.modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // Return promise
+        return new Promise((resolve) => {
+            this.resolvePromise = resolve;
+            
+            // Set up confirm handler
+            const handleConfirm = () => {
+                this.close(true);
+                if (onConfirm) onConfirm();
+                resolve(true);
+            };
+            
+            // Set up cancel handler
+            const handleCancel = () => {
+                this.close(false);
+                if (onCancel) onCancel();
+                resolve(false);
+            };
+
+            // Remove old listeners and add new ones
+            this.confirmBtn.replaceWith(this.confirmBtn.cloneNode(true));
+            if (cancelText !== null) {
+                this.cancelBtn.replaceWith(this.cancelBtn.cloneNode(true));
+                this.cancelBtn = document.getElementById('modalCancelBtn');
+                this.cancelBtn.addEventListener('click', handleCancel);
+            }
+            this.confirmBtn = document.getElementById('modalConfirmBtn');
+            
+            this.confirmBtn.addEventListener('click', handleConfirm);
+        });
+    }
+
+    setModalType(type) {
+        const iconClasses = {
+            warning: 'fas fa-exclamation-triangle text-yellow-600',
+            info: 'fas fa-info-circle text-blue-600',
+            success: 'fas fa-check-circle text-green-600',
+            danger: 'fas fa-exclamation-triangle text-red-600'
+        };
+
+        const bgClasses = {
+            warning: 'bg-yellow-100',
+            info: 'bg-blue-100',
+            success: 'bg-green-100',
+            danger: 'bg-red-100'
+        };
+
+        const buttonClasses = {
+            warning: 'from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 focus:ring-yellow-500',
+            info: 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:ring-blue-500',
+            success: 'from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:ring-green-500',
+            danger: 'from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:ring-red-500'
+        };
+
+        const iconContainer = this.icon.parentElement;
+        iconContainer.className = `flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full ${bgClasses[type] || bgClasses.warning}`;
+        this.icon.className = `${iconClasses[type] || iconClasses.warning} text-xl`;
+        
+        this.confirmBtn.className = `w-full sm:w-auto inline-flex justify-center items-center px-6 py-2.5 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r ${buttonClasses[type] || buttonClasses.warning} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md`;
+    }
+
+    close(result) {
+        this.modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        if (this.resolvePromise) {
+            this.resolvePromise(result);
+            this.resolvePromise = null;
+        }
+    }
+}
+
+// Initialize modal
+const customModal = new CustomModal();
+
+// Replace default confirm
+window.confirm = function(message) {
+    return customModal.show({
+        title: 'Confirm',
+        message: message,
+        confirmText: 'OK',
+        cancelText: 'Cancel',
+        type: 'warning'
+    });
+};
+
+// Replace default alert
+window.alert = function(message) {
+    return customModal.show({
+        title: 'Notice',
+        message: message,
+        confirmText: 'OK',
+        cancelText: null,
+        type: 'info'
+    });
+};
+
+// Custom alert function with types
+window.customAlert = function(message, type = 'info') {
+    return customModal.show({
+        title: type === 'error' ? 'Error' : type === 'success' ? 'Success' : 'Notice',
+        message: message,
+        confirmText: 'OK',
+        cancelText: null,
+        type: type === 'error' ? 'danger' : type
+    });
+};
+</script>
+
