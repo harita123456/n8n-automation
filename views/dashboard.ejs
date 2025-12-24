@@ -177,16 +177,18 @@
 
             const data = await response.json();
             if (data.success) {
-                await customModal.show({
+                const confirmed = await customModal.show({
                     title: 'Success',
                     message: 'File uploaded successfully! ' + data.count + ' milestones found.',
                     confirmText: 'Continue',
                     cancelText: null,
-                    type: 'success',
-                    onCancel: () => {}
+                    type: 'success'
                 });
-                // Redirect to workflow creation
-                window.location.href = '/trello/select?milestones=' + encodeURIComponent(JSON.stringify(data.milestones));
+                // Redirect to workflow creation only after user confirms
+                // Milestones are already stored in session, no need to pass in URL
+                if (confirmed) {
+                    window.location.href = '/trello/select';
+                }
             } else {
                 await customModal.show({
                     title: 'Upload Failed',
